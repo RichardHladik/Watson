@@ -3,7 +3,7 @@ _watson_completion() {
 '
     COMPREPLY=( $( env COMP_WORDS="${COMP_WORDS[*]}" \
                    COMP_CWORD=$COMP_CWORD \
-                   _WATSON_COMPLETE=complete $1 ) )
+                   _WATSON_COMPLETE=complete watson ) )
     return 0
 }
 
@@ -16,6 +16,7 @@ _watson_completionetup() {
     fi
 
     complete $COMPLETION_OPTIONS -F _watson_completion watson
+    complete $COMPLETION_OPTIONS -F _watson_completion wat
 }
 
 _watson_completionetup;
