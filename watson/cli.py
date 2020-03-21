@@ -161,11 +161,11 @@ def help(ctx, command):
     click.echo(cmd.get_help(ctx))
 
 
-def _start(watson, project, tags, restart=False, gap=True):
+def _start(watson, project, tags, restart=False, gap=True, at=None):
     """
     Start project with given list of tags and save status.
     """
-    current = watson.start(project, tags, restart=restart, gap=gap)
+    current = watson.start(project, tags, restart=restart, gap=gap, start_at=at)
     click.echo(u"Starting project {}{} at {}".format(
         style('project', project),
         (" " if current['tags'] else "") + style('tags', current['tags']),
@@ -184,10 +184,13 @@ def _start(watson, project, tags, restart=False, gap=True):
               help="Confirm addition of new project.")
 @click.option('-b', '--confirm-new-tag', is_flag=True, default=False,
               help="Confirm creation of new tag.")
+@click.option('--at', 'at_', type=DateTime, default=None,
+              help=('Start frame at this time. Must be in '
+                    '(YYYY-MM-DDT)?HH:MM(:SS)? format.'))
 @click.pass_obj
 @click.pass_context
 @catch_watson_error
-def start(ctx, watson, confirm_new_project, confirm_new_tag, args, gap_=True):
+def start(ctx, watson, confirm_new_project, confirm_new_tag, args, at_, gap_=True):
     """
     Start monitoring time for the given project.
     You can add tags indicating more specifically what you are working on with
@@ -239,7 +242,7 @@ def start(ctx, watson, confirm_new_project, confirm_new_tag, args, gap_=True):
             watson.config.getboolean('options', 'stop_on_start')):
         ctx.invoke(stop)
 
-    _start(watson, project, tags, gap=gap_)
+    _start(watson, project, tags, gap=gap_, at=at_)
 
 
 @cli.command(context_settings={'ignore_unknown_options': True})
