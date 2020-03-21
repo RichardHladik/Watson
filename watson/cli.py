@@ -488,11 +488,15 @@ _SHORTCUT_OPTIONS_VALUES = {
               help="Format output in plain text (default)")
 @click.option('-g/-G', '--pager/--no-pager', 'pager', default=None,
               help="(Don't) view output through a pager.")
+@click.option('-r/-R', '--round/--no-round', 'round', default=True,
+              help="(Don't) round the start date down (and end date up) to "
+              "nearest day. For example, --to=2020-03-21 becomes 'to "
+              "2020-03-21 and inclusive'.")
 @click.pass_obj
 @catch_watson_error
 def report(watson, current, from_, to, projects, tags, ignore_projects,
            ignore_tags, year, month, week, day, luna, all, output_format,
-           pager, aggregated=False, include_partial_frames=True):
+           pager, round, aggregated=False, include_partial_frames=True):
     """
     Display a report of the time spent on each project.
 
@@ -606,11 +610,12 @@ def report(watson, current, from_, to, projects, tags, ignore_projects,
     else:
         tab = ''
 
+    timeframe = "day" if round else "second"
     report = watson.report(from_, to, current, projects, tags,
                            ignore_projects, ignore_tags,
                            year=year, month=month, week=week, day=day,
                            luna=luna, all=all,
-                           include_partial_frames=include_partial_frames)
+                           include_partial_frames=include_partial_frames, timeframe=timeframe)
 
     if 'json' in output_format and not aggregated:
         click.echo(json.dumps(report, indent=4, sort_keys=True,

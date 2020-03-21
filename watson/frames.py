@@ -181,5 +181,5 @@ class Frames(object):
                 stop = span.stop if frame.stop > span.stop else frame.stop
                 yield frame._replace(start=start, stop=stop)
 
-    def span(self, start, stop):
-        return Span(start, stop)
+    def span(self, start, stop, timeframe="day"):
+        return Span(start, stop, timeframe)
