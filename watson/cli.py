@@ -403,7 +403,7 @@ def status(watson, project, tags, elapsed):
 
     if elapsed:
         click.echo(u"{}".format(
-            style('time', current['start'].humanize())
+            style('time', current['start'].humanize(granularity=["hour", "minute"]))
         ))
         return
 
