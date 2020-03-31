@@ -402,8 +402,10 @@ def status(watson, project, tags, elapsed):
         return
 
     if elapsed:
+        diff = (arrow.utcnow() - current['start']).total_seconds()
+        granularity = "second" if diff < 60 else "minute" if diff < 3600 else ["hour", "minute"]
         click.echo(u"{}".format(
-            style('time', current['start'].humanize(granularity=["hour", "minute"]))
+            style('time', current['start'].humanize(granularity=granularity))
         ))
         return
 
