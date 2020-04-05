@@ -61,8 +61,8 @@ class Frame(namedtuple('Frame', HEADERS)):
 class Span(object):
     def __init__(self, start, stop, timeframe='day'):
         self.timeframe = timeframe
-        self.start = start.floor(self.timeframe)
-        self.stop = stop.ceil(self.timeframe)
+        self.start = start.floor(self.timeframe).shift(hours=5)
+        self.stop = stop.ceil(self.timeframe).shift(hours=5)
 
     def overlaps(self, frame):
         return frame.start <= self.stop and frame.stop >= self.start

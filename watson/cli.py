@@ -1015,9 +1015,12 @@ def log(watson, current, from_, to, projects, tags, year, month, week, day,
         click.echo(frames_to_csv(filtered_frames))
         return
 
+    def get_day(frame: Frame):
+        return frame.start.shift(hours=-5).floor('day')
+
     frames_by_day = sorted_groupby(
         filtered_frames,
-        operator.attrgetter('day'), reverse=True
+        get_day, reverse=True
     )
 
     lines = []
