@@ -184,9 +184,9 @@ def get_start_time_for_period(period):
     weekday = now.weekday()
 
     if period == 'day':
-        start_time = arrow.Arrow(year, month, day)
+        start_time = now.shift(hours=-5).floor('day')
     elif period == 'week':
-        start_time = arrow.Arrow.fromdate(now.shift(days=-weekday).date())
+        start_time = arrow.Arrow.fromdate(now.shift(days=-weekday, hours=-5).date())
     elif period == 'month':
         start_time = arrow.Arrow(year, month, 1)
     elif period == 'luna':
